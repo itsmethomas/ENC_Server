@@ -10,6 +10,8 @@ module.exports = {
 		//console.log(User.create(req.body).done);
 		var facebookId = req.body.facebookId;
 
+		console.log (req.body);
+
 		User.findOne({"facebookId":facebookId}, function(err, user) {
 			if (err == null && user != null) {
 				user.deviceToken = req.body.deviceToken;
@@ -24,6 +26,8 @@ module.exports = {
 	signup: function (req, res) {
 		var userInfo = req.body.userInfo;
 		var facebookId = userInfo.facebookId;
+
+		console.log (req.body);
 
 		User.findOne({"facebookId":facebookId}, function(err, user) {
 			if (err == null && user != null) {
