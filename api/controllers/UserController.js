@@ -104,7 +104,7 @@ module.exports = {
 		}
 
 		if (req.body.gender != 'all') {
-			condition.gender = req.body.gender;
+			//condition.gender = req.body.gender;
 		}
 
 		console.log(req.body); 
