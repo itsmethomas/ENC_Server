@@ -12,6 +12,9 @@ module.exports = {
 
 		User.findOne({"facebookId":facebookId}, function(err, user) {
 			if (err == null && user != null) {
+				user.deviceToken = req.body.deviceToken;
+
+				User.update({"id":user.id}, user).exec(function (err, result) {});
 				res.end(JSON.stringify({success:true, userInfo:user}));
 			} else {
 				res.end(JSON.stringify({success:false, msg:"User does not exist."}));
@@ -84,23 +87,23 @@ module.exports = {
 
 		console.log(req.body.location);
 		var condition = {
-			location:{
-				$geoWithin:{
-					$centerSphere:[
-						[req.body.location[0][0],
-						req.body.location[0][1]
-						], req.body.location[1]
-					]
-				}
-			},
+			// location:{
+			// 	$geoWithin:{
+			// 		$centerSphere:[
+			// 			[req.body.location[0][0],
+			// 			req.body.location[0][1]
+			// 			], req.body.location[1]
+			// 		]
+			// 	}
+			// },
 			birthDate: {$gte:startDate, $lt:endDate}
 		}
 
 		if (req.body.gender != 'all') {
-			condition.sex = req.body.gender;
+			condition.gender = req.body.gender;
 		}
 
-		console.log(req.body);
+		console.log(req.body); 
 		console.log(condition);
 		User.find(condition).exec(function(err, users) {
 			if (err == null){
@@ -161,53 +164,6 @@ module.exports = {
 				});
 			}
 		});
-	},
-	updateVideo: function (req, res) {
-		if(req.method === 'GET')
-			return res.json({'err':'GET not allowed'});						
-
-		var userId = req.param('userId');
-		var uploadFile = req.files.videoFile;
-
-		// move to real upload folder...
-		var fs = require('fs');
-		var tmp_path = uploadFile.path;
-		var target_path = './assets/videos/' + userId + '.mp4';
-
-		fs.readStream(tmp_path).pipe(fs.createWriteStream(target_path).on("close", function() {
-			fs.unlink(tmp_path, function(err) {
-				if (err) throw err;
-			});
-
-			// update user video url
-			User.find({"id":userId}, function(err, users) {
-				console.log(err);
-				if (err != null || users.length == 0)
-				{
-					res.end('{"err":"failed"}');
-				}
-				else
-				{
-					var userInfo = users[0];
-					var protocol = req.connection.encrypted?'https':'http';
-					var baseUrl = protocol + '://' + req.headers.host + '/';
-
-					userInfo.videoUrl = baseUrl + "videos/" + userId + ".mp4";
-					User.update({"id":userId}, userInfo).exec(function (err, result) {
-						console.log(err);
-						console.log(result);
-						if (err == null)
-						{
-							res.end(JSON.stringify(result[0]));
-						}
-						else
-						{
-							res.end('{"err":"failed"}');
-						}
-					});
-				}
-			});
-		}));
 	}
 };
-
+ 

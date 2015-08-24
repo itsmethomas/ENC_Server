@@ -47,16 +47,16 @@ module.exports = {
 		});
 	},
 	updateReads: function (req, res) {
-		  var circleId = req.body.circleId;
-		  var userId = req.body.userId;
-		  UserCircle.findOne({id:circleId}, function (err, circle) {
-			  if (circle.ownerId == userId) {
-				  circle.ownerUnread = 0;
-			  } else {
-				  circle.inviterUnread = 0;
-			  }
-			  UserCircle.update({id:circle.id}, circle).exec(function (err, res){});
-		  });
+		  // var circleId = req.body.circleId;
+		  // var userId = req.body.userId;
+		  // UserCircle.findOne({id:circleId}, function (err, circle) {
+			 //  if (circle.ownerId == userId) {
+				//   circle.ownerUnread = 0;
+			 //  } else {
+				//   circle.inviterUnread = 0;
+			 //  }
+			 //  UserCircle.update({id:circle.id}, circle).exec(function (err, res){});
+		  // });
 	  },
 	allStatus: function (req, res) {
 		  var userId = req.body.userId;

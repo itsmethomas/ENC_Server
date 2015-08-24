@@ -58,52 +58,21 @@ module.exports.routes = {
     controller    : 'User',
     action        : 'explore'
   },
-  'get /user': {
-    controller    : 'User',
-    action        : 'photos'
+  'post /match': {
+    controller    : 'Match',
+    action        : 'like'
   },
-  'post /user': {
-    controller    : 'User',
-    action        : 'savePhoto'
+  'post /match': {
+    controller    : 'Match',
+    action        : 'myMatches'
   },
-  'post /user': {
-    controller    : 'User',
-    action        : 'updateVideo'
+  'post /meeting': {
+    controller    : 'Meeting',
+    action        : 'saveMeeting'
   },
-  'post /user': {
-    controller    : 'User',
-    action        : 'saveProfilePhoto'
+  'post /meeting': {
+    controller    : 'Meeting',
+    action        : 'updateStatus'
   },
-  'post /user': {
-    controller    : 'User',
-    action        : 'saveSettings'
-  },
-  'get /user': {
-    controller    : 'User',
-    action        : 'fetchUserProfile'
-  },
-  'post /circle/create': {
-    controller    : 'UserCircle',
-    action        : 'createCircle'
-  },
-  'get /circle/circles': {
-    controller    : 'UserCircle',
-    action        : 'myCircles'
-  },
-  'post /circle/updateStatus': {
-    controller    : 'UserCircle',
-    action        : 'updateCircleStatus'
-  },
-  'post /circle/swap': {
-    controller    : 'UserCircle',
-    action        : 'swapCircle'
-  },
-  'get /circle/forFriend': {
-    controller    : 'UserCircle',
-    action        : 'getCircleForFriend'
-  },
-  'get /message/forCircle': {
-    controller    : 'Message',
-    action        : 'messages'
-  },
-};
+
+  };

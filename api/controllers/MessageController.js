@@ -10,56 +10,23 @@ module.exports = {
 		var myId = req.body.userId;
 		var myName = req.body.userName;
 		var toId = req.body.friendId;
-		var circleId = req.body.circleId;
+		var matchId = req.body.matchId;
 		var message = req.body.msg;
 
-		var msgInfo = {circleId:circleId, fromId:myId, toId:toId, message:message, isRead:'1'};
+		var msgInfo = {matchId:matchId, fromId:myId, toId:toId, message:message, isRead:'1'};
 		console.log(msgInfo);
 		Message.create(msgInfo, function (err, msg) {
-			// get count of all unread messages...
-			var condition = {$or:[{"ownerId":toId}, {"friendId":toId}], "status":"accepted"};
-			console.log (condition);
-			UserCircle.find(condition, function (err, circles) {
-				var count = 0;
-				console.log ('--- circle count', circles.length);
-				for (var i=0; i<circles.length; i++) {
-					var circle = circles[i];
-					if (circle.ownerId == toId) {
-						count += circle.ownerUnread - 1 + 1;
-					} else {
-						count += circle.inviterUnread - 1 + 1;
-					}
-				}
-
-				Message.sendNotificationWithBadge(toId, 'message_sent', msg, myName + ": " + message, count + 1);
-			});
-
 			var socketId = sails.sockets.id(req.socket);
 			sails.sockets.emit(socketId, 'message_sent', msg);
-		});
 
-		// Count Unread Message Count...
-		UserCircle.findOne({id:circleId}, function (err, circle) {
-			User.findOne({id:toId}, function (err, user) {
-				if (circle.ownerId == toId) {
-					circle.ownerUnread++;
-				} else {
-					circle.inviterUnread++;
-				}
-				console.log(circle);
-
-				UserCircle.update({id:circle.id}, circle).exec(function (err, result){ console.log(err); console.log(result);});
-				if (user.status == 'online') {
-					sails.sockets.emit(user.session_id, 'circle_status', circle);
-				}
-			});
+			Message.sendNotificationWithBadge(toId, 'message_sent', msg, myName + ": " + message, 1);
 		});
 	},
 	messages: function(req, res) {
-		var circleId = req.body.circleId;
+		var matchId = req.body.matchId;
 		var createdDate = req.body.createdDate;
 
-		var condition = {circleId:circleId};
+		var condition = {matchId:matchId};
 		if (createdDate) {
 			condition.createdAt = {'<' : createdDate};
 		}

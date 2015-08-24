@@ -7,7 +7,7 @@
 
 module.exports = {
 	attributes: {
-		circleId: {
+		matchId: {
 			type: 'string',
 			required: true
 		},

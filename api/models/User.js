@@ -34,6 +34,7 @@ module.exports = {
 			type: 'date'
 		},
 		gender: {
+			type: 'string'
 		},
 		settings: {
 			type: 'json'
@@ -48,6 +49,18 @@ module.exports = {
 			type: 'json'
 		},
 		session_id: {
+			type: 'string'
+		},
+		status: {
+			type: 'string'
+		},
+		numberOfAccepted: {
+			type: 'string'
+		},
+		numberOfRefused: {
+			type: 'string'
+		},
+		numberOfMeetings: {
 			type: 'string'
 		},
 		status: {
