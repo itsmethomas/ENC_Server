@@ -45,7 +45,7 @@ module.exports = {
 				
 				User.create(userInfo, function(err, user) {
 					if (err == null) {
-						res.end(JSON.stringify({success:true, userInfo:userInfo}));
+						res.end(JSON.stringify({success:true, msg:user}));
 					} else {
 						console.log(err);
 						res.end(JSON.stringify({success:false, msg:"Internal Server Error."}));
