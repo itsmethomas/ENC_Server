@@ -31,6 +31,23 @@ module.exports = {
 						}
 						Match.update({id:match.id}, match).exec(function (err, result) {});
 						res.end(JSON.stringify({success:true, msg:match}));
+
+						// send a push notification.
+						var friendName = null;
+						var deviceToken = null;
+						if (isOwner) {
+							friendName = match.ownerInfo.name;
+							deviceToken = match.inviterInfo.deviceToken;
+						} else {
+							friendName = match.inviterInfo.name;
+							deviceToken = match.ownerInfo.deviceToken;
+						}
+
+						var pushMsg = "You & " + friendName + " have liked each other.";
+						console.log(pushMsg);
+						console.log(deviceToken);
+						Message.sendPush(deviceToken, pushMsg);
+
 					} else {
 						if (err != null) {
 							res.end(JSON.stringify({success:false, msg:"Server Error Occured."}));
